@@ -3,6 +3,8 @@
   <div class="container">
     <Balance :total="+total" />
     <IncomeExpenses :income="income" :expenses="expenses" />
+    <TransactionList :transactions="transactions" @transaction-delete="handleTransactionDeleted" />
+    <AddTransaction @transaction-submitted="handleTransactionSubmitted" />
   </div>
 </template>
 
@@ -11,13 +13,28 @@
 import HeaderComponent from "./components/Header.vue";
 import Balance from "./components/Balance.vue";
 import IncomeExpenses from "./components/IncomeExpenses.vue";
+import TransactionList from "./components/TransactionList.vue";
+import AddTransaction from "./components/AddTransaction.vue";
 
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useToast } from "vue-toastification";
 
-const transactions = ref([
-  { text: "salary", amount: 10000 },
-  { text: "mac mini m4 2024", amount: -599 },
-]);
+const transactions = ref([]);
+
+const toast = useToast()
+
+onMounted(() => {
+  const savedTransaction = JSON.parse(localStorage.getItem("transactions"));
+
+  if (savedTransaction) {
+    transactions.value = savedTransaction;
+  }
+});
+
+// save transaction to localstorage
+const savedTransactionToLocalStorage = () => {
+  localStorage.setItem('transactions', JSON.stringify(transactions.value))
+}
 
 // Get total
 const total = computed(() => {
@@ -43,4 +60,30 @@ const expenses = computed(() => {
       return acc + transaction.amount;
     }, 0);
 });
+
+// Add Transaction
+const handleTransactionSubmitted = (transactionData) => {
+  transactions.value.push({
+    id: generateUniqueId(),
+    title: transactionData.title,
+    amount: transactionData.amount,
+  })
+
+  savedTransactionToLocalStorage();
+
+  toast.success('Transaction added');
+}
+
+const generateUniqueId = () => {
+  return Math.floor(Math.random() * 100000);
+}
+
+const handleTransactionDeleted = (id) => {
+  transactions.value = transactions.value.filter(transaction => transaction.id !== id);
+
+  savedTransactionToLocalStorage();
+
+  toast.success("Transaction deleted");
+}
+
 </script>
