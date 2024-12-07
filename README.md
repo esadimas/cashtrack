@@ -3,9 +3,9 @@ CashTrack adalah aplikasi sederhana untuk melacak pemasukan (income) dan pengelu
 
 ## Fitur
 - [✓] Menampilkan saldo berdasarkan pemasukan dan pengeluaran.
-- Menampilkan riwayat pemasukan dan pengeluaran.
-- Input data pemasukan dan pengeluaran.
-- UI yang sederhana dan mudah digunakan.
+- [✓] Menampilkan riwayat pemasukan dan pengeluaran.
+- [✓] Input data pemasukan dan pengeluaran.
+- [✓] UI yang sederhana dan mudah digunakan.
 
 ## Teknologi yang Digunakan
 - Frontend Framework: Vue.js
@@ -41,4 +41,7 @@ Berikut struktur direktori utama dari proyek ini:
     └── main.js         # Entry point aplikasi  
     ```
 
-
+## Rencana Pengembangan
+- Menambahkan fitur autentikasi pengguna.
+- Menambahkan kategori untuk pemasukan dan pengeluaran.
+- Menyimpan data ke backend menggunakan API (atau database).
